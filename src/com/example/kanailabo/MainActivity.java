@@ -14,6 +14,9 @@ import android.util.Xml;
 import android.widget.ListView;
 
 public class MainActivity extends Activity{
+	private static final String APPLICATION_URL = "http://kanai-lab.herokuapp.com/xml/members.xml";
+	private static final String ENCORDING = "UTF-8";
+	
 	//リストビュー表示のためのデータのリスト
 	private ArrayList<CustomData> customDatas = new ArrayList<CustomData>();
 	private CustomAdapter customAdapater;
@@ -41,10 +44,10 @@ public class MainActivity extends Activity{
 	    		//xmlをパースしてくれるクラスのインスタンスを取得
 	            XmlPullParser xmlPullParser = Xml.newPullParser();
 	         
-	            URL url = new URL("http://kanai-lab.herokuapp.com/xml/members.xml");
+	            URL url = new URL(APPLICATION_URL);
 	            URLConnection connection = url.openConnection();
 	            //URLからxmlを取得してPullParserにセット
-	            xmlPullParser.setInput(connection.getInputStream(), "UTF-8");
+	            xmlPullParser.setInput(connection.getInputStream(), ENCORDING);
 	            //取得したxmlの最初のイベントタイプを取得
 	            int eventType = xmlPullParser.getEventType();
 	            
@@ -60,6 +63,9 @@ public class MainActivity extends Activity{
 	                        //今回は何もしていない。  
 	                        break;  
 	                      
+												/**
+												 * memberとかgradeなおして
+												 */
 	                    //開始タグ時  
 	                    case XmlPullParser.START_TAG:  
 	                        tag = xmlPullParser.getName();  
@@ -79,6 +85,9 @@ public class MainActivity extends Activity{
 	                                customData.setName(xmlPullParser.nextText());  
 	                            }else if(tag.equals("status")){  
 	                                switch (Integer.valueOf(xmlPullParser.nextText())) {
+									///////////////////////////////////////////////////////
+									//magic number!!!!!!!!!!!!!!!!
+									///////////////////////////////////////////////////////
 									case 0:
 										customData.setStatus(CustomData.LABO);
 										break;
@@ -112,19 +121,14 @@ public class MainActivity extends Activity{
 	    	//例外処理
 	    	catch (Exception e){
 	        	e.printStackTrace();
-	            Log.d("XmlPullParserSampleUrl", "Error");
 	        }
 	        return null;
 	    }
 	    //非同期処理が終わったらメインスレッドでビューの更新
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO 自動生成されたメソッド・スタブ
 			super.onPostExecute(result);
 			customAdapater.notifyDataSetChanged();
-			for(CustomData customData:customDatas){
-	        	Log.e("mainActivity", customData.getName());
-	        }
 		}
 	 
 	}
