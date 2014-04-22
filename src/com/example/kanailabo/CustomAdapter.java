@@ -1,28 +1,22 @@
 package com.example.kanailabo;
 
+import java.util.List;
+
 import android.content.Context;
-import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.List;
 
 public class CustomAdapter extends ArrayAdapter<CustomData>{
 	private LayoutInflater layoutInflater;
 
 	private TextView gradeText;
 	private TextView nameText;
-	private RadioGroup radioGroup;  
-	private RadioButton radioLabo;  
-	private RadioButton radioCampus; 
-	private RadioButton radioHome; 
+	private RadioGroup radioGroup;
 
 	public CustomAdapter(Context context, int textViewResourceId, List<CustomData> objects) {
 		super(context, textViewResourceId, objects);
@@ -58,12 +52,9 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 	/**
 	 * set find view by id
 	 */
-	private void setLayout(LayoutInflater convertView){
+	private void setLayout(View convertView){
 		gradeText = (TextView)convertView.findViewById(R.id.grade);
 		nameText = (TextView)convertView.findViewById(R.id.name);
 		radioGroup = (RadioGroup)convertView.findViewById(R.id.status);
-		radioLabo = (RadioButton)convertView.findViewById(R.id.labo);     
-		radioCampus = (RadioButton)convertView.findViewById(R.id.campus);	 
-		radioHome = (RadioButton)convertView.findViewById(R.id.home);
 	}
 }

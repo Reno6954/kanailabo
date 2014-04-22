@@ -9,13 +9,16 @@ import org.xmlpull.v1.XmlPullParser;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Xml;
 import android.widget.ListView;
 
 public class MainActivity extends Activity{
 	private static final String APPLICATION_URL = "http://kanai-lab.herokuapp.com/xml/members.xml";
 	private static final String ENCORDING = "UTF-8";
+	private static final String MEMBER = "member";
+	private static final String GRADE = "grade";
+	private static final String NAME = "name";
+	private static final String STATUS = "status";
 	
 	//リストビュー表示のためのデータのリスト
 	private ArrayList<CustomData> customDatas = new ArrayList<CustomData>();
@@ -63,9 +66,6 @@ public class MainActivity extends Activity{
 	                        //今回は何もしていない。  
 	                        break;  
 	                      
-												/**
-												 * memberとかgradeなおして
-												 */
 	                    //開始タグ時  
 	                    case XmlPullParser.START_TAG:  
 	                        tag = xmlPullParser.getName();  
@@ -73,21 +73,18 @@ public class MainActivity extends Activity{
 	                        //必要なのは、memberタグの中身の子タグのみなので  
 	                        //memberのスタートタグでcustomDataクラスインスタンス作成し、  
 	                        //作成していなかったら、member内の情報ではない。  
-	                        if(tag.equals("member")){
+	                        if(tag.equals(MEMBER)){
 	                            customData = new CustomData();                      
 	                        }else if (customData!=null){  
 	                            //memberタグ内の子タグごとの処理  
 	                            //タグ名称と取得したいタグ名を比較して  
 	                            //同じであったら、nextText()により内容取得。  
-	                            if (tag.equals("grade")){
+	                            if (tag.equals(GRADE)){
 	                                customData.setGrade(xmlPullParser.nextText());  
-	                            }else if(tag.equals("name")){  
+	                            }else if(tag.equals(NAME)){  
 	                                customData.setName(xmlPullParser.nextText());  
-	                            }else if(tag.equals("status")){  
+	                            }else if(tag.equals(STATUS)){  
 	                                switch (Integer.valueOf(xmlPullParser.nextText())) {
-									///////////////////////////////////////////////////////
-									//magic number!!!!!!!!!!!!!!!!
-									///////////////////////////////////////////////////////
 									case 0:
 										customData.setStatus(CustomData.LABO);
 										break;
@@ -107,7 +104,7 @@ public class MainActivity extends Activity{
 	                        //memberタグが終わったら、そこで１記事のセットが終了したとして  
 	                        //customDatasに追加。  
 	                        tag=xmlPullParser.getName();  
-	                        if(tag.equals("member")){  
+	                        if(tag.equals(MEMBER)){  
 	                            //Itemタグ終了時に格納。  
 	                            customDatas.add(customData);  
 	                            customData = null;  
