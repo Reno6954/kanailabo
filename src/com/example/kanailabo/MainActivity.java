@@ -7,14 +7,19 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Xml;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.GridView;
 
-public class MainActivity extends Activity{
-	private static final String APPLICATION_URL = "http://kanai-lab.herokuapp.com/xml/members.xml";
-	private static final String ENCORDING = "UTF-8";
+public class MainActivity extends Activity implements OnItemClickListener{
+	private static final String MEMBERS_URL = "http://kanai-lab.herokuapp.com/xml/members.xml";
+	private static final String ENCODING = "UTF-8";
 	private static final String MEMBER = "member";
 	private static final String GRADE = "grade";
 	private static final String NAME = "name";
@@ -32,25 +37,28 @@ public class MainActivity extends Activity{
         //リストビューに表示するためのビューをリストから作成するアダプター
         customAdapater = new CustomAdapter(this, 0, customDatas);
         
-        ListView listView = (ListView)findViewById(R.id.listView1);
-        listView.setAdapter(customAdapater);
+        GridView gridView = (GridView)findViewById(R.id.gridView1);
+        gridView.setAdapter(customAdapater);
         
         //非同期でxmlを取得してパースする
-        new PostMessageTask().execute();
+        new RosterAcquisition().execute();
         
+        gridView.setOnItemClickListener(this);
 	}
+	
+	
 	//非同期処理
-	public class PostMessageTask extends AsyncTask<String, Integer, String> {
+	public class RosterAcquisition extends AsyncTask<String, Integer, String> {
 	    @Override
 	    protected String doInBackground(String... contents) {
 	    	try{
 	    		//xmlをパースしてくれるクラスのインスタンスを取得
 	            XmlPullParser xmlPullParser = Xml.newPullParser();
 	         
-	            URL url = new URL(APPLICATION_URL);
+	            URL url = new URL(MEMBERS_URL);
 	            URLConnection connection = url.openConnection();
 	            //URLからxmlを取得してPullParserにセット
-	            xmlPullParser.setInput(connection.getInputStream(), ENCORDING);
+	            xmlPullParser.setInput(connection.getInputStream(), ENCODING);
 	            //取得したxmlの最初のイベントタイプを取得
 	            int eventType = xmlPullParser.getEventType();
 	            
@@ -121,6 +129,8 @@ public class MainActivity extends Activity{
 	        }
 	        return null;
 	    }
+	    
+	    
 	    //非同期処理が終わったらメインスレッドでビューの更新
 		@Override
 		protected void onPostExecute(String result) {
@@ -128,5 +138,18 @@ public class MainActivity extends Activity{
 			customAdapater.notifyDataSetChanged();
 		}
 	 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO 自動生成されたメソッド・スタブ
+		// クリックされたアイテムを取得する。
+				CustomData item = (CustomData) parent.getItemAtPosition(position);
+				Intent intent = new Intent(this,PrivateStatus.class);
+				intent.putExtra("name", item.getName());
+				intent.putExtra("status", item.getStatus());
+				intent.putExtra("position", position);
+				startActivity(intent);
 	}
 }

@@ -2,9 +2,9 @@ package com.example.kanailabo;
 
 public class CustomData{
 	public static final int
-			LABO	= R.id.labo,
-			CAMPUS	= R.id.campus,
-			HOME	= R.id.home;
+			LABO	= 0x00ffff,
+			CAMPUS	= 0xffff00,
+			HOME	= 0xdc143c;
 	private String grade;
 	private String name;
 	private int status;
