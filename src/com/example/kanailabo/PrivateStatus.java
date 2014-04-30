@@ -1,7 +1,8 @@
 package com.example.kanailabo;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.content.Intent;
+import android.content.ClipData.Item;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,9 +18,9 @@ public class PrivateStatus extends Activity implements OnClickListener{
 	
 	private static final String CORR_URL = "http://kanai-lab.herokuapp.com/corr.php";
 	private static final String ID = "id";
-	private static final String ZERO = "0";
-	private static final String ONE = "1";
-	private static final String TWO = "2";
+	private static final String LAB = "0";
+	private static final String CAM = "1";
+	private static final String HOM = "2";
 	private LinearLayout linear;
 
 	@Override
@@ -37,13 +38,13 @@ public class PrivateStatus extends Activity implements OnClickListener{
 			status = list.getInt("status");
 			position = list.getInt("position");
 		}
-		
-		if(status == CustomData.LABO)
+		linear.setBackgroundColor(status);
+		/*if(status == CustomData.LABO)
 			linear.setBackgroundColor(Color.BLUE);
 		else if(status == CustomData.CAMPUS)
 			linear.setBackgroundColor(Color.YELLOW);
 		else if(status == CustomData.HOME)
-			linear.setBackgroundColor(Color.RED);
+			linear.setBackgroundColor(Color.RED);*/
 		Name.setText(name);
 		
 		Button button1 = (Button)findViewById(R.id.lab);
@@ -52,33 +53,50 @@ public class PrivateStatus extends Activity implements OnClickListener{
 		button2.setOnClickListener(this);
 		Button button3 = (Button)findViewById(R.id.home);
 		button3.setOnClickListener(this);
+		Button button4 = (Button)findViewById(R.id.back);
+		button4.setOnClickListener(this);
 	}
-
+	
+	@Override
+	protected void onResume() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onResume();
+	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO 自動生成されたメソッド・スタブ
 		final String id = Integer.toString(position);
 		//Toast.makeText(this,, Toast.LENGTH_LONG).show();
-		String Status = "";
+		String NewStatus = "";
 		switch (v.getId()) {
 			case R.id.lab:
-				Status = ZERO;
-				linear.setBackgroundColor(Color.BLUE);
+				NewStatus = LAB;
+				linear.setBackgroundColor(getResources().getColor(R.color.color1));
 				break;
 			case R.id.campus:
-				Status = ONE;
-				linear.setBackgroundColor(Color.YELLOW);
+				NewStatus = CAM;
+				linear.setBackgroundColor(getResources().getColor(R.color.color2));
 				break;
 			case R.id.home:
-				Status = TWO;
-				linear.setBackgroundColor(Color.RED);
+				NewStatus = HOM;
+				linear.setBackgroundColor(getResources().getColor(R.color.color3));
+				break;
+			case R.id.back:
+				Intent intent = new Intent(this,MainActivity.class);
+				startActivity(intent);
 				break;
 		}
 		ButtonPost CORR = new ButtonPost(CORR_URL);
-		CORR.execute(ID,id,id,Status);
+		CORR.execute(ID,id,id,NewStatus);
 	}
 	
-	
-	
-	
+	/*public void drawBG(int bg){
+		if(bg == CustomData.LABO)
+			linear.setBackgroundColor(getResources().getColor(R.color.color1));
+		else if(bg == CustomData.CAMPUS)
+			linear.setBackgroundColor(getResources().getColor(R.color.color2));
+		else if(bg == CustomData.HOME)
+			linear.setBackgroundColor(getResources().getColor(R.color.color3));
+	}*/
 }
