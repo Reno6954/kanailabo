@@ -7,17 +7,16 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Xml;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 public class MainActivity extends Activity implements OnItemClickListener{
 	private static final String MEMBERS_URL = "http://kanai-lab.herokuapp.com/xml/members.xml";
@@ -27,18 +26,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private static final String NAME = "name";
 	private static final String STATUS = "status";
 	private GridView gridView;
+	private CustomProgress progressDialog;
 	
 	private int color1 = 0;
 	private int color2 = 0;
 	private int color3 = 0;
-	
-	/*public MainActivity(int color1, int color2, int color3) {
-		super();
-		this.color1 = color1;
-		this.color2 = color2;
-		this.color3 = color3;
-	}*/
-	
 
 	//リストビュー表示のためのデータのリスト
 	private ArrayList<CustomData> customDatas = new ArrayList<CustomData>();
@@ -48,19 +40,19 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		// TODO 自動生成されたメソッド・スタブ
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		//MainActivity color = new MainActivity(getResources().getColor(R.color.color1), getResources().getColor(R.color.color2), getResources().getColor(R.color.color3));
+		
+		//ダイアログ
+		progressDialog = new CustomProgress(this);
+		
 		color1 = getResources().getColor(R.color.color1);
 		color2 = getResources().getColor(R.color.color2);
 		color3 = getResources().getColor(R.color.color3);
-        //リストビューに表示するためのビューをリストから作成するアダプター
+		//リストビューに表示するためのビューをリストから作成するアダプター
         customAdapater = new CustomAdapter(this, 0, customDatas);
-        
         gridView = (GridView)findViewById(R.id.gridView1);
         gridView.setAdapter(customAdapater);
-        
         //非同期でxmlを取得してパースする
-        new RosterAcquisition().execute();
-        
+        new RosterAcquisition().startTask();
         gridView.setOnItemClickListener(this);
 	}
 	
@@ -68,14 +60,27 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	protected void onResume() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
-		//gridView.setBackgroundColor(getResources().getColor(R.color.color1));
+		//customAdapater.notifyDataSetChanged();
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onStop();
+		finish();
 	}
 	
 	//非同期処理
 	public class RosterAcquisition extends AsyncTask<String, Integer, String> {
+		public void startTask(){
+			progressDialog.show();
+			execute();
+		}
+		
 	    @Override
 	    protected String doInBackground(String... contents) {
 	    	try{
+	    		//Thread.sleep(3000);
 	    		//xmlをパースしてくれるクラスのインスタンスを取得
 	            XmlPullParser xmlPullParser = Xml.newPullParser();
 	         
@@ -161,8 +166,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			customAdapater.notifyDataSetChanged();
+			progressDialog.dismiss();
 		}
-	 
 	}
 
 	@Override
@@ -176,5 +181,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				intent.putExtra("status", item.getStatus());
 				intent.putExtra("position", position);
 				startActivity(intent);
+				finish();
 	}
 }

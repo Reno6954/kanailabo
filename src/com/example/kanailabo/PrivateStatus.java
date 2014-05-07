@@ -2,7 +2,6 @@ package com.example.kanailabo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.ClipData.Item;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,12 +38,6 @@ public class PrivateStatus extends Activity implements OnClickListener{
 			position = list.getInt("position");
 		}
 		linear.setBackgroundColor(status);
-		/*if(status == CustomData.LABO)
-			linear.setBackgroundColor(Color.BLUE);
-		else if(status == CustomData.CAMPUS)
-			linear.setBackgroundColor(Color.YELLOW);
-		else if(status == CustomData.HOME)
-			linear.setBackgroundColor(Color.RED);*/
 		Name.setText(name);
 		
 		Button button1 = (Button)findViewById(R.id.lab);
@@ -61,6 +54,13 @@ public class PrivateStatus extends Activity implements OnClickListener{
 	protected void onResume() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onStop();
+		finish();
 	}
 	
 	@Override
@@ -85,18 +85,12 @@ public class PrivateStatus extends Activity implements OnClickListener{
 			case R.id.back:
 				Intent intent = new Intent(this,MainActivity.class);
 				startActivity(intent);
+				finish();
 				break;
 		}
-		ButtonPost CORR = new ButtonPost(CORR_URL);
-		CORR.execute(ID,id,id,NewStatus);
+		if (NewStatus != ""){
+			ButtonPost CORR = new ButtonPost(CORR_URL);
+			CORR.execute(ID,id,id,NewStatus);
+		}
 	}
-	
-	/*public void drawBG(int bg){
-		if(bg == CustomData.LABO)
-			linear.setBackgroundColor(getResources().getColor(R.color.color1));
-		else if(bg == CustomData.CAMPUS)
-			linear.setBackgroundColor(getResources().getColor(R.color.color2));
-		else if(bg == CustomData.HOME)
-			linear.setBackgroundColor(getResources().getColor(R.color.color3));
-	}*/
 }

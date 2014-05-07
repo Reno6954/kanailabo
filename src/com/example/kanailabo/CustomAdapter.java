@@ -40,29 +40,6 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 		nameText.setText(item.getName());
 		custom_linear.setBackgroundColor(item.getStatus());
 
-		// ラジオグループのチェック状態が変更された時に呼び出されるコールバックリスナーを登録します
-		/*radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-				// ラジオグループのチェック状態が変更された時に呼び出されます
-				// チェック状態が変更されたラジオボタンのIDが渡されます
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				String Status = "";
-				item.setStatus(checkedId);
-				switch (checkedId) {
-				case CustomData.LABO:
-					Status = ZERO;
-					break;
-				case CustomData.CAMPUS:
-					Status = ONE;
-					break;
-				case CustomData.HOME:
-					Status = TWO;
-					break;
-				}
-				ButtonPost CORR = new ButtonPost(CORR_URL);
-				CORR.execute(ID,id,id,Status);
-			}
-		});
-		radioGroup.check(item.getStatus());*/
 		return convertView;
 	}
 	/**
