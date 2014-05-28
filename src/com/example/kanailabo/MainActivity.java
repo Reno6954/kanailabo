@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Xml;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -27,12 +26,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private static final String STATUS = "status";
 	private GridView gridView;
 	private CustomProgress progressDialog;
+	static final int res=0;
 	
 	private int color1 = 0;
 	private int color2 = 0;
 	private int color3 = 0;
 
-	//リストビュー表示のためのデータのリスト
+	//リストビュー表示のためのデータのリスト0
 	private ArrayList<CustomData> customDatas = new ArrayList<CustomData>();
 	private CustomAdapter customAdapater;
 	@Override
@@ -60,14 +60,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	protected void onResume() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
-		//customAdapater.notifyDataSetChanged();
-	}
-	
-	@Override
-	protected void onStop() {
-		// TODO 自動生成されたメソッド・スタブ
-		super.onStop();
-		finish();
 	}
 	
 	//非同期処理
@@ -180,7 +172,27 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				intent.putExtra("name", item.getName());
 				intent.putExtra("status", item.getStatus());
 				intent.putExtra("position", position);
-				startActivity(intent);
-				finish();
+				Log.e("position",String.valueOf(position));
+				startActivityForResult(intent,position);
 	}
+	
+	//円形加工
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onActivityResult(requestCode, resultCode, data);
+		Log.v("main activity", "activity result"+data);
+		Bundle status = data.getExtras();
+		int bg = status.getInt("status");
+		if (bg == 0)
+			customDatas.get(requestCode).setStatus(color1);
+		else if (bg == 1)
+			customDatas.get(requestCode).setStatus(color2);	
+		else if (bg == 2)
+			customDatas.get(requestCode).setStatus(color3);
+		Log.e("requestCode",String.valueOf(requestCode));
+		Log.e("resultCode",String.valueOf(resultCode));
+		customAdapater.notifyDataSetChanged();
+	}
+	
 }

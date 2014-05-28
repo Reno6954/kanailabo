@@ -858,13 +858,14 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f070006;
+        public static final int abc_search_url_text_holo=0x7f070007;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
         public static final int color1=0x7f070003;
         public static final int color2=0x7f070004;
         public static final int color3=0x7f070005;
+        public static final int color4=0x7f070006;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1085,15 +1086,23 @@ containing a value of this type.
         public static final int bg03=0x7f020059;
         public static final int bg04=0x7f02005a;
         public static final int bgset2=0x7f02005b;
-        public static final int button_blue=0x7f02005c;
-        public static final int button_green=0x7f02005d;
-        public static final int button_red=0x7f02005e;
-        public static final int gabyou_blue=0x7f02005f;
-        public static final int gabyou_green=0x7f020060;
-        public static final int gabyou_red=0x7f020061;
-        public static final int ic_launcher=0x7f020062;
-        public static final int kuhaku=0x7f020063;
-        public static final int midashi=0x7f020064;
+        public static final int border=0x7f02005c;
+        public static final int button_blue=0x7f02005d;
+        public static final int button_green=0x7f02005e;
+        public static final int button_red=0x7f02005f;
+        public static final int gabyou_blue=0x7f020060;
+        public static final int gabyou_green=0x7f020061;
+        public static final int gabyou_red=0x7f020062;
+        public static final int ic_launcher=0x7f020063;
+        public static final int image=0x7f020064;
+        public static final int image0=0x7f020065;
+        public static final int image1=0x7f020066;
+        public static final int image2=0x7f020067;
+        public static final int image3=0x7f020068;
+        public static final int image4=0x7f020069;
+        public static final int image5=0x7f02006a;
+        public static final int kuhaku=0x7f02006b;
+        public static final int midashi=0x7f02006c;
     }
     public static final class id {
         public static final int Contact=0x7f050047;
@@ -1134,6 +1143,7 @@ containing a value of this type.
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
         public static final int imageView1=0x7f050044;
+        public static final int imageview1=0x7f050040;
         public static final int lab=0x7f050045;
         public static final int linear=0x7f050043;
         public static final int listMode=0x7f050001;
@@ -1162,7 +1172,6 @@ containing a value of this type.
         public static final int showHome=0x7f050004;
         public static final int showTitle=0x7f050006;
         public static final int split_action_bar=0x7f05001e;
-        public static final int status=0x7f050040;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
         public static final int title=0x7f05002b;
