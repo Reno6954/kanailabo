@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +33,15 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private int color1 = 0;
 	private int color2 = 0;
 	private int color3 = 0;
+	
+	/** ダイアログ用定数 **/
+    public static final int DIALOG_TEST = 0;
+    /** name用定数 **/
+    public static final String DIALOG_NAME = "name";
+    /** status用定数 **/
+    public static final String DIALOG_STATUS = "status";
+    /** position用定数 **/
+    public static final String DIALOG_POSITION = "position";
 
 	//リストビュー表示のためのデータのリスト0
 	private ArrayList<CustomData> customDatas = new ArrayList<CustomData>();
@@ -168,20 +179,21 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		// TODO 自動生成されたメソッド・スタブ
 		// クリックされたアイテムを取得する。
 				CustomData item = (CustomData) parent.getItemAtPosition(position);
-				Intent intent = new Intent(this,PrivateStatus.class);
-				intent.putExtra("name", item.getName());
-				intent.putExtra("status", item.getStatus());
-				intent.putExtra("position", position);
-				Log.e("position",String.valueOf(position));
-				startActivityForResult(intent,position);
+				//Intent intent = new Intent(this,PrivateStatus.class);
+				//intent.putExtra("name", item.getName());
+				//intent.putExtra("status", item.getStatus());
+				//intent.putExtra("position", position);
+				//startActivityForResult(intent,position);
+				
+				PrivateDialog dialog = new PrivateDialog(this, item.getBitmap(), item.getName(), item.getStatus(), position);
+				dialog.show();
 	}
 	
-	//円形加工
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.v("main activity", "activity result"+data);
 		Bundle status = data.getExtras();
 		int bg = status.getInt("status");
 		if (bg == 0)
@@ -190,8 +202,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			customDatas.get(requestCode).setStatus(color2);	
 		else if (bg == 2)
 			customDatas.get(requestCode).setStatus(color3);
-		Log.e("requestCode",String.valueOf(requestCode));
-		Log.e("resultCode",String.valueOf(resultCode));
 		customAdapater.notifyDataSetChanged();
 	}
 	

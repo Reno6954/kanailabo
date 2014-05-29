@@ -1,21 +1,26 @@
 package com.example.kanailabo;
 
+import android.graphics.Bitmap;
+
 public class CustomData{
 	private String grade;
 	private String name;
 	private int status;
+	private Bitmap bitmap;
 	
 	public CustomData() {
 		super();
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 	
-	public CustomData(String grade, String name, int status) {
+	public CustomData(String grade, String name, int status, Bitmap bitmap) {
 		super();
 		this.grade = grade;
 		this.name = name;
 		this.status = status;
+		this.bitmap = bitmap;
 	}
+
 	public String getGrade() {
 		return grade;
 	}
@@ -33,6 +38,12 @@ public class CustomData{
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 	
 }

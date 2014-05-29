@@ -34,7 +34,7 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 	private ImageView imageView1;
 	WindowManager wm;
 	private static Context context;
-	Bitmap image = null;
+	Bitmap image;
 	Integer[] switch_images = new Integer[100];
 
 	public CustomAdapter(Context context, int textViewResourceId, List<CustomData> objects) {
@@ -45,15 +45,6 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		//画像配列
-		/*if(switch_images == null){
-			for(int i = 0;i < switch_images.length;i++){
-				switch_images[i] = R.drawable.image + i;
-				Log.e("imageNo", String.valueOf(switch_images[i]));
-			}
-		}
-		*/
 		// 特定の行(position)のデータを得る
 		final CustomData item = (CustomData)getItem(position);
 		// convertViewは使い回しされている可能性があるのでnullの時だけ新しく作る
@@ -69,8 +60,13 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 			convertView.setMinimumWidth(size.x/6);
 			convertView.setMinimumHeight(size.y/5);
 		}
-		//画像
 		
+		image = circle(position);
+		//画像保存
+		item.setBitmap(image);
+		
+		//画像リサイズ
+		Bitmap reBitmap= Bitmap.createScaledBitmap(image, 80, 80, false);
 		
 		setLayout(position,convertView);
 		// CustomDataのデータをViewの各Widgetにセットする
@@ -78,7 +74,7 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 		gradeText.setText(item.getGrade());
 		nameText.setText(item.getName());
 		custom_linear.setBackgroundColor(item.getStatus());
-		imageView1.setImageBitmap(circle(position));
+		imageView1.setImageBitmap(reBitmap);
 		
 		return convertView;
 		
@@ -98,32 +94,29 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 		//画像ID指定
 		Bitmap bitmap;
 		if(p < 6 && 0 < p){
-			//String ID = "R.drawable.image" + p;
-			//Log.e("ID", ID);
 			int viewId = context.getResources().getIdentifier("image"+p, "drawable", context.getPackageName());
-			Log.e("viewId", String.valueOf(viewId));
 			bitmap = BitmapFactory.decodeResource(context.getResources(), viewId);
 		}
 		else{
 			bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.image);
-			Log.e("NoID", "R.drawable.image");
 		}
-		//画像リサイズ
-		Bitmap reBitmap= Bitmap.createScaledBitmap(bitmap, 80, 80, false);
 		
-		Bitmap result = Bitmap.createBitmap(reBitmap.getWidth(), reBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+		//画像リサイズ
+		Bitmap resizeBitmap= Bitmap.createScaledBitmap(bitmap, 200, 200, false);
+		
+		Bitmap result = Bitmap.createBitmap(resizeBitmap.getWidth(), resizeBitmap.getHeight(), Bitmap.Config.ARGB_8888);
 			 
 		Canvas canvas = new Canvas(result);
 		Paint paint = new Paint();
-		Rect rect = new Rect(0, 0, reBitmap.getWidth(), reBitmap.getHeight());
+		Rect rect = new Rect(0, 0, resizeBitmap.getWidth(), resizeBitmap.getHeight());
 			 
 		paint.setAntiAlias(true);
 		canvas.drawARGB(0, 0, 0, 0);
 		paint.setColor(Color.BLUE);
 			 
-		canvas.drawCircle(reBitmap.getWidth() / 2, reBitmap.getHeight() / 2, reBitmap.getHeight() / 2, paint);
+		canvas.drawCircle(resizeBitmap.getWidth() / 2, resizeBitmap.getHeight() / 2, resizeBitmap.getHeight() / 2, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-		canvas.drawBitmap(reBitmap, rect, rect, paint);
+		canvas.drawBitmap(resizeBitmap, rect, rect, paint);
 		
 		return result;
 	}

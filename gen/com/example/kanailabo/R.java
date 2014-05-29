@@ -1085,24 +1085,26 @@ containing a value of this type.
         public static final int bg02=0x7f020058;
         public static final int bg03=0x7f020059;
         public static final int bg04=0x7f02005a;
-        public static final int bgset2=0x7f02005b;
-        public static final int border=0x7f02005c;
-        public static final int button_blue=0x7f02005d;
-        public static final int button_green=0x7f02005e;
-        public static final int button_red=0x7f02005f;
-        public static final int gabyou_blue=0x7f020060;
-        public static final int gabyou_green=0x7f020061;
-        public static final int gabyou_red=0x7f020062;
-        public static final int ic_launcher=0x7f020063;
-        public static final int image=0x7f020064;
-        public static final int image0=0x7f020065;
-        public static final int image1=0x7f020066;
-        public static final int image2=0x7f020067;
-        public static final int image3=0x7f020068;
-        public static final int image4=0x7f020069;
-        public static final int image5=0x7f02006a;
-        public static final int kuhaku=0x7f02006b;
-        public static final int midashi=0x7f02006c;
+        public static final int bg_dialog=0x7f02005b;
+        public static final int bg_name=0x7f02005c;
+        public static final int bgset2=0x7f02005d;
+        public static final int border=0x7f02005e;
+        public static final int button_blue=0x7f02005f;
+        public static final int button_green=0x7f020060;
+        public static final int button_red=0x7f020061;
+        public static final int gabyou_blue=0x7f020062;
+        public static final int gabyou_green=0x7f020063;
+        public static final int gabyou_red=0x7f020064;
+        public static final int ic_launcher=0x7f020065;
+        public static final int image=0x7f020066;
+        public static final int image0=0x7f020067;
+        public static final int image1=0x7f020068;
+        public static final int image2=0x7f020069;
+        public static final int image3=0x7f02006a;
+        public static final int image4=0x7f02006b;
+        public static final int image5=0x7f02006c;
+        public static final int kuhaku=0x7f02006d;
+        public static final int midashi=0x7f02006e;
     }
     public static final class id {
         public static final int Contact=0x7f050047;
@@ -1234,7 +1236,8 @@ containing a value of this type.
         public static final int custom_progress=0x7f030019;
         public static final int customdata=0x7f03001a;
         public static final int private_status=0x7f03001b;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
+        public static final int privatedialog=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
