@@ -6,9 +6,8 @@ import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import android.R.integer;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemClickListener{
 	private static final String MEMBERS_URL = "http://kanai-lab.herokuapp.com/xml/members.xml";
@@ -42,6 +42,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
     public static final String DIALOG_STATUS = "status";
     /** position用定数 **/
     public static final String DIALOG_POSITION = "position";
+    //データ参照用
+    CustomData item;
 
 	//リストビュー表示のためのデータのリスト0
 	private ArrayList<CustomData> customDatas = new ArrayList<CustomData>();
@@ -65,12 +67,6 @@ public class MainActivity extends Activity implements OnItemClickListener{
         //非同期でxmlを取得してパースする
         new RosterAcquisition().startTask();
         gridView.setOnItemClickListener(this);
-	}
-	
-	@Override
-	protected void onResume() {
-		// TODO 自動生成されたメソッド・スタブ
-		super.onResume();
 	}
 	
 	//非同期処理
@@ -174,21 +170,19 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 		// TODO 自動生成されたメソッド・スタブ
 		// クリックされたアイテムを取得する。
-				CustomData item = (CustomData) parent.getItemAtPosition(position);
-				//Intent intent = new Intent(this,PrivateStatus.class);
-				//intent.putExtra("name", item.getName());
-				//intent.putExtra("status", item.getStatus());
-				//intent.putExtra("position", position);
-				//startActivityForResult(intent,position);
-				
-				PrivateDialog dialog = new PrivateDialog(this, item.getBitmap(), item.getName(), item.getStatus(), position);
-				dialog.show();
+		item = (CustomData) parent.getItemAtPosition(position);
+		//Intent intent = new Intent(this,PrivateStatus.class);
+		//intent.putExtra("name", item.getName());
+		//intent.putExtra("status", item.getStatus());
+		//intent.putExtra("position", position);
+		//startActivityForResult(intent,position);
+		
+		PrivateDialog dialog = new PrivateDialog(this, item.getBitmap(), item.getName(), item.getStatus(), position,parent,customAdapater);
+		dialog.show();
 	}
-	
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -204,5 +198,16 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			customDatas.get(requestCode).setStatus(color3);
 		customAdapater.notifyDataSetChanged();
 	}
+	
+	public void onReturnValue(int p,int s) {
+		Log.e("s", String.valueOf(s));
+		if (s == 0)
+			customDatas.get(p).setStatus(color1);
+		else if (s == 1)
+			customDatas.get(p).setStatus(color2);	
+		else if (s == 2)
+			customDatas.get(p).setStatus(color3);
+		customAdapater.notifyDataSetChanged();
+	  }
 	
 }

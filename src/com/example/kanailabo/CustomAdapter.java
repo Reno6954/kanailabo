@@ -57,8 +57,8 @@ public class CustomAdapter extends ArrayAdapter<CustomData>{
 			Point size = new Point();
 			disp.getSize(size);
 			//widthの幅がわかったので、ここでは5列の例
-			convertView.setMinimumWidth(size.x/6);
-			convertView.setMinimumHeight(size.y/5);
+			convertView.setMinimumWidth(size.x/6-2);
+			convertView.setMinimumHeight(size.y/5-2);
 		}
 		
 		image = circle(position);

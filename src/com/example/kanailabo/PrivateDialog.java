@@ -2,14 +2,15 @@ package com.example.kanailabo;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,9 @@ public class PrivateDialog extends Dialog implements OnClickListener{
 	String name;
 	int status;
 	int position;
+	AdapterView<?> parent;
+	CustomAdapter customAdapter;
+	Context context;
 	
 	int st = 3;
 	private static final String CORR_URL = "http://kanai-lab.herokuapp.com/corr.php";
@@ -26,13 +30,23 @@ public class PrivateDialog extends Dialog implements OnClickListener{
 	private static final String LAB = "0";
 	private static final String CAM = "1";
 	private static final String HOM = "2";
+	
+	CustomData item;
+	private int color1 = 0;
+	private int color2 = 0;
+	private int color3 = 0;
+	
+	CustomProgress progressDialog;
  
-    public PrivateDialog(Context context, Bitmap image, String name, int status,int position) {
+    public PrivateDialog(Context context, Bitmap image, String name, int status,int position,AdapterView<?> parent,CustomAdapter customAdapter) {
 		super(context);
+		this.context = context;
 		this.image = image;
 		this.name = name;
 		this.status = status;
 		this.position = position;
+		this.parent = parent;
+		this.customAdapter = customAdapter;
 	}
 
 	public PrivateDialog(Context context) {
@@ -49,9 +63,12 @@ public class PrivateDialog extends Dialog implements OnClickListener{
         // dialog.xml を利用する
         setContentView(R.layout.privatedialog);
         
-        Log.e("name", this.name);
-        Log.e("status", String.valueOf(this.status));
-        Log.e("position", String.valueOf(this.position));
+        //dialogの外枠を消す
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        
+        color1 = context.getResources().getColor(R.color.color1);
+		color2 = context.getResources().getColor(R.color.color2);
+		color3 = context.getResources().getColor(R.color.color3);
         
         setObject();
         
@@ -69,51 +86,8 @@ public class PrivateDialog extends Dialog implements OnClickListener{
 		button2.setOnClickListener(this);
 		Button button3 = (Button)findViewById(R.id.home);
 		button3.setOnClickListener(this);
-		Button button4 = (Button)findViewById(R.id.Contact);
-		button4.setOnClickListener(this);
-        
-		/*
-        // 「OK」ボタン
-        findViewById(R.id.lab).setOnClickListener(
-                new View.OnClickListener() {
- 
-            @Override
-            public void onClick(View arg0) {
-                dismiss();
-            }
- 
-        });
-        // 「Cancel」ボタン
-        findViewById(R.id.campus).setOnClickListener(
-            new View.OnClickListener() {
- 
-            @Override
-            public void onClick(View arg0) {
-                cancel();
-            }
- 
-        });
-     // 「Cancel」ボタン
-        findViewById(R.id.home).setOnClickListener(
-            new View.OnClickListener() {
- 
-            @Override
-            public void onClick(View arg0) {
-                cancel();
-            }
- 
-        });
-     // 「Cancel」ボタン
-        findViewById(R.id.Contact).setOnClickListener(
-            new View.OnClickListener() {
- 
-            @Override
-            public void onClick(View arg0) {
-                cancel();
-            }
- 
-        });
-        */
+		//Button button4 = (Button)findViewById(R.id.Contact);
+		//button4.setOnClickListener(this);
     }
 	
 	@Override
@@ -121,6 +95,14 @@ public class PrivateDialog extends Dialog implements OnClickListener{
 		// TODO 自動生成されたメソッド・スタブ
 		// TODO 自動生成されたメソッド・スタブ
 		final String id = Integer.toString(position);
+
+		//ダイアログ
+		//progressDialog = new CustomProgress(context);
+		//progressDialog.show();
+		
+		dismiss();
+		// クリックされたアイテムを取得する。
+		item = (CustomData) parent.getItemAtPosition(position);
 		//Toast.makeText(this,, Toast.LENGTH_LONG).show();
 		String NewStatus = "";
 		switch (v.getId()) {
@@ -139,22 +121,23 @@ public class PrivateDialog extends Dialog implements OnClickListener{
 				st = 2;
 				setResult();
 				break;
-			case R.id.back:
-				setResult();
-				break;
 		}
 		if (NewStatus != ""){
 			ButtonPost CORR = new ButtonPost(CORR_URL);
 			CORR.execute(ID,id,id,NewStatus);
 		}
+		//dismiss();
+		//progressDialog.dismiss();
 	}
 	
 	private void setResult(){
-		//data = new Intent();
-		//data.putExtra("status", st);
-		//setResult(RESULT_OK,data);
-		Log.v("st",String.valueOf(st));
-		dismiss();
+		if (st == 0)
+			item.setStatus(color1);
+		else if (st == 1)
+			item.setStatus(color2);	
+		else if (st == 2)
+			item.setStatus(color3);
+		this.customAdapter.notifyDataSetChanged();
 	}
 	
 	private void setObject(){
